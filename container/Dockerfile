@@ -3,10 +3,11 @@ FROM ${BASE_IMAGE}
 WORKDIR /app
 COPY R/ R/
 COPY scripts/ scripts/
+COPY entrypoint.R ./
 COPY schemas/ schemas/
 COPY test_data/ test_data/
 COPY module.yml renv.lock ./
 RUN mkdir -p /data /output && useradd --create-home --uid 10001 --shell /usr/sbin/nologin limma && chown --recursive limma:limma /app /data /output
 USER limma
-ENTRYPOINT ["Rscript", "--vanilla", "/app/scripts/run_limma_analysis.R"]
+ENTRYPOINT ["Rscript", "--vanilla", "/app/entrypoint.R"]
 CMD ["--help"]
