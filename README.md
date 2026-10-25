@@ -4,11 +4,6 @@ Portable continuous-matrix Limma component derived from canonical OMIX Limma
 Analysis. Raw counts are not accepted; supply an explicitly declared normalized
 or score-matrix artifact with aligned metadata.
 
-## Status
-
-Local candidate only. It has passed a synthetic continuous-expression container
-smoke test but is not published or OncoChat-enabled.
-
 ## Input and output
 
 Stage a declared continuous matrix and aligned metadata read-only under `/data`.
@@ -24,6 +19,6 @@ docker run --rm --platform linux/amd64 \
 ```
 
 The root output retains `Limma_Analysis.csv`, `Sample_Metadata.csv`, variance
-diagnostics, and `run_summary.txt`. The adapter additionally provides stable
-copies under `tables/`, `figures/`, and `logs/`, with `RUN_METADATA.md` and
-`run_manifest.json` for orchestration.
+diagnostics, and `run_summary.txt`. The tool also provides stable copies under
+`tables/`, `figures/`, and `logs/`, with `RUN_METADATA.md` and
+`run_manifest.json`.
