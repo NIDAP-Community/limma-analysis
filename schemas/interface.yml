@@ -1,0 +1,188 @@
+interface_version: 3
+entrypoint: scripts/run_limma_analysis.R
+inputs:
+  matrix:
+    required: true
+    formats: [csv, tsv, txt, rds]
+    description: Feature-by-sample continuous matrix. Raw integer sequencing counts are not accepted. CIBERSORT relative fractions are accepted only through their declared input type and transformation controls.
+  metadata:
+    required: true
+    formats: [csv, tsv, txt, rds]
+    description: Sample-level metadata with a unique sample-ID column aligned to matrix sample columns.
+parameters:
+  gene_names_column:
+    type: string
+    default: GeneName
+  sample_names_column:
+    type: string
+    default: Sample
+  samples_to_include:
+    type: string
+    default: ""
+    description: Optional comma-separated sample IDs. By default, all metadata samples found in the matrix are used.
+  contrast_variable_columns:
+    type: string
+    default: Group
+    description: One or two comma-separated metadata columns defining the modeled groups.
+  contrasts:
+    type: string
+    default: ""
+    description: Optional comma-separated limma contrast expressions, such as B-A or 1-0. When blank, the only comparison is inferred if exactly two modeled groups have at least two samples each. Numeric modeled-group labels are translated to valid internal design names while output labels preserve the requested expression.
+  covariate_columns:
+    type: string
+    default: ""
+  batch_effect_columns:
+    type: string
+    default: ""
+    description: Optional comma-separated technical batch columns. They are included in the model and may be removed from the dedicated downstream expression matrix while preserving biological groups.
+  donor_variable_column:
+    type: string
+    default: ""
+    description: Optional repeated-measure donor/patient column. Supply only when a donor has repeated modeled profiles.
+  summarization_method:
+    type: string
+    default: mean
+    allowed: [mean, max, sum]
+  input_kind:
+    type: string
+    default: auto
+    allowed: [auto, log2_expression, enrichment_score, continuous_score]
+    description: Controls effect-size labeling. auto resolves log2 expression, enrichment-score, or generic continuous effects from input_data_type.
+  input_data_type:
+    type: string
+    default: auto
+    allowed:
+      - auto
+      - microarray_log2_expression
+      - normalized_bulk_expression
+      - log2_cpm_without_voom_weights
+      - sctransform_mean_expression
+      - harmony_corrected_mean_expression
+      - gsva_enrichment_scores
+      - cibersort_relative_fractions
+      - cibersort_absolute_scores
+      - methylation_m_values
+      - normalized_proteomics
+      - normalized_metabolomics
+      - qpcr_delta_ct
+      - copy_number_log2_ratios
+      - normalized_chromatin_accessibility
+      - normalized_crispr_scores
+      - other_continuous
+    description: Scientific interpretation of the matrix. auto uses a compatible manifest, or a limited backward-compatible input_kind mapping. Matrix values alone are never used to guess SCT, Harmony, GSVA, or another assay type.
+  measurement_scale:
+    type: string
+    default: ""
+    description: Short description of the supplied measurement scale. Required when input_data_type is other_continuous and recommended for all externally prepared matrices.
+  fraction_transform:
+    type: string
+    default: auto
+    allowed: [auto, none, arcsin_sqrt, logit]
+    description: Transformation for cibersort_relative_fractions. auto uses arcsin_sqrt because it handles exact zero and one fractions without inventing an effective cell-count denominator. logit uses fraction_pseudocount at the boundaries.
+  fraction_pseudocount:
+    type: number
+    default: 0.0001
+    description: Boundary replacement used only for an explicit logit transform of CIBERSORT relative fractions. Must be greater than 0 and less than 0.5.
+  variance_model:
+    type: string
+    default: auto
+    allowed: [auto, ebayes, ebayes_trend]
+    description: auto resolves a documented default from the declared input data type or compatible manifest. ebayes uses a constant prior variance; ebayes_trend permits the prior variance to vary with average signal. other_continuous requires an explicit choice.
+  pseudobulk_manifest:
+    type: path
+    default: ""
+    description: Optional Pseudobulk_Manifest.dcf. It verifies that the input is a declared Harmony or SCTransform continuous-expression handoff, selects the recommended variance model when variance_model is auto, and rejects raw integer counts.
+  return_matrix:
+    type: boolean
+    default: true
+  return_batch_corrected_values:
+    type: boolean
+    default: false
+    description: When true with declared batch_effect_columns, writes a batch-adjusted continuous matrix for downstream tools without changing Limma DE statistics.
+  output_dir:
+    type: path
+    default: results
+outputs:
+  limma_analysis:
+    path: Limma_Analysis.csv
+    format: csv
+    description: Template-compatible results. log2_expression uses signed FC and logFC columns; other input kinds use effect columns in the supplied score units.
+  sample_metadata:
+    path: Sample_Metadata.csv
+    format: csv
+    description: Metadata aligned to the modeled matrix columns.
+  batch_corrected_expression:
+    path: Batch_Corrected_Expression.csv
+    format: csv
+    required_when: return_batch_corrected_values=true and batch_effect_columns is not empty
+    description: Gene-by-sample continuous matrix with declared technical batch effects removed while preserving biological comparison groups. Suitable for downstream continuous-score workflows.
+  run_summary:
+    path: run_summary.txt
+    format: text
+    description: Matrix provenance, requested and resolved input type, transformation and variance model, design, and donor-correlation details.
+  variance_diagnostic:
+    path: Variance_Diagnostic.csv
+    format: csv
+    description: Per-feature average signal and pre-moderation residual standard deviation used to assess whether a mean-variance trend remains.
+  variance_diagnostic_plot:
+    path: variance_diagnostic.png
+    format: png
+    description: Residual standard deviation versus average signal with a lowess trend when enough features are available.
+collection_interface:
+  interface_version: 1
+  entrypoint: scripts/run_limma_cell_type_collection.R
+  description: Explicit selected/all cell-type pseudobulk collection interface. It runs independent donor-level M-F Limma models and writes a deterministic wide table for OMIX L2P Multi; it does not pool cells or fit a cell-type interaction model.
+  inputs:
+    pseudobulk_collection_manifest:
+      required: true
+      type: path
+      formats: [dcf]
+      description: Pseudobulk_Collection_Manifest.dcf from OMIX Seurat Pseudobulk selected or all mode. Its profile catalog and nested ordinary bundle paths are validated explicitly.
+  parameters:
+    contrast:
+      type: string
+      default: M-F
+      allowed: [M-F]
+      description: Fixed donor-level comparison. Both M and F require at least two donor-level profiles in every emitted cell type.
+    sample_names_column:
+      type: string
+      default: Sample
+    gene_names_column:
+      type: string
+      default: GeneName
+    covariate_columns:
+      type: string
+      default: ""
+      description: Optional comma-separated covariates modeled independently in every cell type.
+    batch_effect_columns:
+      type: string
+      default: ""
+      description: Optional comma-separated technical batch columns modeled independently in every cell type.
+    donor_variable_column:
+      type: string
+      default: ""
+      description: Optional repeated-measure donor blocking column. Supply only when a donor contributes repeated modeled profiles within each cell type.
+    output_dir:
+      type: path
+      default: results
+  outputs:
+    l2p_multi_input:
+      path: L2P_Multi_Input.csv
+      format: csv
+      description: GeneName plus ordered <stable-cell-type-id>__M-F_tstat, _pval, and _FC column families. Every emitted cell type has the exact same ordered tested-gene universe and finite required statistics.
+    l2p_multi_input_provenance:
+      path: L2P_Multi_Input_Provenance.csv
+      format: csv
+      description: Ordered comparison, stable/display cell-type identity, source paths and hashes, Limma model/contrast/variance decisions, profile counts, and output path for every exported cell type.
+    collection_catalog:
+      path: Limma_Cell_Type_Collection_Catalog.csv
+      format: csv
+      description: Input pseudobulk profile eligibility and routing with the associated Limma and L2P Multi comparison paths.
+    collection_run_summary:
+      path: Limma_Cell_Type_Collection_Run_Summary.txt
+      format: text
+      description: Collection source hashes, contrast, comparison order, tested-gene count, and strict common-universe statement.
+    per_cell_type_limma_bundles:
+      path: cell_types/<stable-cell-type-id>/
+      format: directory
+      description: Independent Limma_Analysis.csv, Sample_Metadata.csv, Variance_Diagnostic.csv, and run_summary.txt bundles for each exported cell type.

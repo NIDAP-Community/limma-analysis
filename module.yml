@@ -1,0 +1,15 @@
+name: omix-limma-analysis
+display_name: OMIX Limma Analysis
+version: 1.2.0
+interface_version: 3
+module_type: statistical-analysis
+status: active
+owner: OMIX Team
+description: Limma analysis for declared continuous feature-by-sample matrices, with data-type-aware empirical-Bayes defaults and explicit provenance.
+data_policy: No data are committed. Callers supply explicit continuous matrices and aligned sample metadata paths.
+runtime_profile: r-statistics
+entrypoint: scripts/run_limma_analysis.R
+collection_entrypoint: scripts/run_limma_cell_type_collection.R
+deployment_adapters:
+  - platform: code-ocean
+    repository: https://github.com/NIDAP-Community/OMIX-Limma-Analysis
