@@ -1,0 +1,31 @@
+name: Validate Limma application
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: NIDAP-Community/OMIX
+          ref: 0ea6223129de6d98d69469027c19fa1887b59f6a
+          path: canonical-omix
+      - name: Verify pinned scientific export
+        run: |
+          set -euo pipefail
+          cmp R/OMIX_Limma_Analysis.R canonical-omix/modules/OMIX-Limma-Analysis/R/OMIX_Limma_Analysis.R
+          cmp scripts/run_limma_analysis.R canonical-omix/modules/OMIX-Limma-Analysis/scripts/run_limma_analysis.R
+          cmp schemas/interface.yml canonical-omix/modules/OMIX-Limma-Analysis/schemas/interface.yml
+          cmp module.yml canonical-omix/modules/OMIX-Limma-Analysis/module.yml
+      - run: container/build_docker.sh limma-analysis:ci
+      - run: container/smoke_test.sh limma-analysis:ci
+      - run: container/parity_test.sh limma-analysis:ci
