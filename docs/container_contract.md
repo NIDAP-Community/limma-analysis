@@ -12,5 +12,12 @@ writes results only through writable `/output`.
 | Credentials | No database, cloud, or OncoChat credentials accepted or embedded |
 | Command surface | Declared Limma CLI arguments only; no arbitrary shell execution |
 
-The image is not yet published. A later approved publication must record an
-immutable application image digest before it is invoked by any deployment.
+## Validated application image
+
+The approved Linux/AMD64 `v1.0.0` image was built from source commit
+`8fe2cd7eea6f22cb14eabe78ff6b4f79d2ea5ef0`:
+
+`ghcr.io/nidap-community/limma-analysis@sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2`
+
+Use the digest for execution. The readable `v1.0.0` and `latest` tags are
+convenience references only. A versioned GitHub Release record remains pending.

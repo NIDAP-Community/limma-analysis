@@ -6,5 +6,13 @@
 - Canonical R implementation, primary CLI, canonical interface schema, and
   module manifest are byte-preserved and verified in CI.
 - The standalone entrypoint performs adapter validation and bundle assembly only.
-- Image publication, release/tag creation, deployment, OncoChat modifications,
-  and the cell-type collection to L2P Multi workflow remain out of scope.
+- The cell-type collection to L2P Multi workflow remains out of scope.
+
+## 2026-10-27: v1.0.0 image publication
+
+- Tagged and pushed source commit `8fe2cd7eea6f22cb14eabe78ff6b4f79d2ea5ef0`
+  as `v1.0.0`.
+- Published Linux/AMD64 `v1.0.0` and `latest` image tags, both resolving at
+  publication to `sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2`.
+- The GitHub CLI token was invalid, so creating the versioned GitHub Release
+  object remains pending account re-authentication.

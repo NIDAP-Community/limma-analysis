@@ -36,5 +36,13 @@ and the cell-type collection to L2P Multi workflow are neither exported nor
 runnable here. They require a separate, versioned extension with its own
 interface, fixtures, parity evidence, and release decision.
 
-No standalone OCI image has been published and no GitHub release or tag has
-been created for this repository. Those are separate approval-gated steps.
+## Standalone publication record
+
+The approved Linux/AMD64 application image for source tag `v1.0.0`
+(`8fe2cd7eea6f22cb14eabe78ff6b4f79d2ea5ef0`) is:
+
+`ghcr.io/nidap-community/limma-analysis@sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2`
+
+The readable `v1.0.0` and `latest` tags both resolved to that digest at
+publication. A versioned GitHub Release record remains pending account
+re-authentication.

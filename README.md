@@ -34,6 +34,19 @@ look like counts, normalize them, or transform them: the declared data type is
 the caller’s scientific contract. Use a count-aware workflow before calling
 this adapter when starting from raw counts.
 
+## Validated image
+
+The approved `v1.0.0` Linux/AMD64 image was built from source commit
+`8fe2cd7eea6f22cb14eabe78ff6b4f79d2ea5ef0`. Use its immutable digest for
+reproducible execution:
+
+```text
+ghcr.io/nidap-community/limma-analysis@sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2
+```
+
+`v1.0.0` and `latest` are readable tags that resolved to this digest at
+publication. A GitHub Release record is still pending account re-authentication.
+
 ## Build
 
 The container uses an immutable AMD64 base image digest. Build a local image:
@@ -41,8 +54,6 @@ The container uses an immutable AMD64 base image digest. Build a local image:
 ```bash
 container/build_docker.sh limma-analysis:local
 ```
-
-No standalone OCI image has been published yet.
 
 ## Run
 

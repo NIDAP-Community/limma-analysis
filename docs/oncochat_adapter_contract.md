@@ -13,8 +13,8 @@ does not modify or configure OncoChat.
 
 ## Execution boundary
 
-- Invoke an approved standalone image by immutable digest. **No application
-  image digest exists yet because no standalone image has been published.**
+- Invoke the approved standalone image by immutable digest:
+  `ghcr.io/nidap-community/limma-analysis@sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2`.
 - Do not expose database credentials, cloud credentials, host paths, or arbitrary
   shell arguments to the container.
 - Do not provide network-dependent scientific inputs during execution.
@@ -28,5 +28,5 @@ does not modify or configure OncoChat.
   inferential `tables/Limma_Analysis.csv`.
 
 The cell-type collection to L2P Multi workflow is explicitly out of scope for
-this adapter version. Database mapping, image publication, and deployment
-remain separate approval gates.
+this adapter version. Database mapping and deployment remain separate approval
+gates.
