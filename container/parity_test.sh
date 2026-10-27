@@ -14,4 +14,5 @@ docker run --rm --platform linux/amd64 --user "$(id -u):$(id -g)" \
 cmp "${canonical_out}/Limma_Analysis.csv" "${adapter_out}/Limma_Analysis.csv"
 cmp "${canonical_out}/Sample_Metadata.csv" "${adapter_out}/Sample_Metadata.csv"
 cmp "${canonical_out}/Variance_Diagnostic.csv" "${adapter_out}/Variance_Diagnostic.csv"
+cmp "${canonical_out}/run_summary.txt" "${adapter_out}/run_summary.txt"
 printf 'Limma canonical-output parity passed.\n'

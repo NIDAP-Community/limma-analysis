@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: NIDAP-Community/OMIX
-          ref: 0ea6223129de6d98d69469027c19fa1887b59f6a
+          ref: 68d4811323e2dd997208076dd398cc9d68dae5a1
           path: canonical-omix
       - name: Verify pinned scientific export
         run: |
@@ -29,3 +29,4 @@ jobs:
       - run: container/build_docker.sh limma-analysis:ci
       - run: container/smoke_test.sh limma-analysis:ci
       - run: container/parity_test.sh limma-analysis:ci
+      - run: bash tests/test_adapter_contract.sh limma-analysis:ci

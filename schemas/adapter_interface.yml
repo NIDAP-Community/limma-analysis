@@ -1,0 +1,52 @@
+# Adapter-specific contract. The canonical OMIX schema remains byte-preserved
+# in interface.yml; this file narrows the standalone invocation boundary.
+adapter_name: limma-analysis-primary-continuous-matrix
+canonical_module: OMIX-Limma-Analysis
+canonical_interface_version: 3
+scope:
+  supported_entrypoint: scripts/run_limma_analysis.R
+  unsupported_entrypoints:
+    - scripts/run_limma_cell_type_collection.R
+  unsupported_workflows:
+    - cell-type collection to L2P Multi
+inputs:
+  matrix:
+    required: true
+    accepted_formats: [csv, tsv, txt, rds]
+    semantics: Pre-normalized continuous feature-by-sample matrix; no raw counts.
+  metadata:
+    required: true
+    accepted_formats: [csv, tsv, txt, rds]
+    semantics: One row for every matrix sample, aligned exactly by declared identifier.
+  input_data_type:
+    required: true
+    allowed_values:
+      - microarray_log2_expression
+      - normalized_bulk_expression
+      - log2_cpm_without_voom_weights
+      - sctransform_mean_expression
+      - harmony_corrected_mean_expression
+      - gsva_enrichment_scores
+      - cibersort_relative_fractions
+      - cibersort_absolute_scores
+      - methylation_m_values
+      - normalized_proteomics
+      - normalized_metabolomics
+      - qpcr_delta_ct
+      - copy_number_log2_ratios
+      - normalized_chromatin_accessibility
+      - normalized_crispr_scores
+      - other_continuous
+    rejected_values: [auto, raw_integer_counts]
+outputs:
+  required:
+    - tables/Limma_Analysis.csv
+    - tables/Sample_Metadata.csv
+    - tables/Variance_Diagnostic.csv
+    - figures/variance_diagnostic.png
+    - logs/run_summary.txt
+    - logs/sessionInfo.txt
+    - RUN_METADATA.md
+    - run_manifest.json
+  optional:
+    tables/Batch_Corrected_Expression.csv: Downstream continuous matrix, distinct from inferential results.
