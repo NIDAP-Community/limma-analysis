@@ -16,4 +16,4 @@
   `sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2`.
 - Tagged source commit `8fe2cd7eea6f22cb14eabe78ff6b4f79d2ea5ef0` as `v1.0.0`.
 
-The versioned GitHub Release record remains pending account re-authentication.
+The versioned GitHub Release is published as `v1.0.0`.

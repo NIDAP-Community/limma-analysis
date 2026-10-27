@@ -14,5 +14,5 @@
   as `v1.0.0`.
 - Published Linux/AMD64 `v1.0.0` and `latest` image tags, both resolving at
   publication to `sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2`.
-- The GitHub CLI token was invalid, so creating the versioned GitHub Release
-  object remains pending account re-authentication.
+- Published the matching GitHub Release as `v1.0.0` through the authenticated
+  GitHub browser session.

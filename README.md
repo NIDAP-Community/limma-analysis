@@ -45,7 +45,7 @@ ghcr.io/nidap-community/limma-analysis@sha256:83d73524eac2d346b329e20f4de5e7bb33
 ```
 
 `v1.0.0` and `latest` are readable tags that resolved to this digest at
-publication. A GitHub Release record is still pending account re-authentication.
+publication. The versioned GitHub Release is published as `v1.0.0`.
 
 ## Build
 

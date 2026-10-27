@@ -1,5 +1,4 @@
 # Release Evidence
 
-`v1.0.0.md` records the published application image and source tag. A matching
-GitHub Release object still needs to be created after GitHub CLI authentication
-is restored.
+`v1.0.0.md` records the published application image and source tag. The matching
+GitHub Release is published as `v1.0.0`.

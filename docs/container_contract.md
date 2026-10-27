@@ -20,4 +20,4 @@ The approved Linux/AMD64 `v1.0.0` image was built from source commit
 `ghcr.io/nidap-community/limma-analysis@sha256:83d73524eac2d346b329e20f4de5e7bb330c1be96a31a8afe331883280a193a2`
 
 Use the digest for execution. The readable `v1.0.0` and `latest` tags are
-convenience references only. A versioned GitHub Release record remains pending.
+convenience references only. The matching GitHub Release is published as `v1.0.0`.
